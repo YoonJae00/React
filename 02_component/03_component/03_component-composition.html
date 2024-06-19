@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script crossorigin src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+
+    <div id="root"></div>
+    <!-- 
+        컴포넌트의 합성
+        컴포넌트는 자신의 출력에 따른 컴포넌트를 참조할 수 있다.
+        컴포넌트는 최대한 재사용이 가능한 크기로 작게 유지해야 하며,
+        순수 함수 처럼 작성 되어야 한다.
+    -->
+
+    <script type="text/babel">
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+
+        // const user = {
+        //     name : '매롱',
+        //     age : 1000,
+        //     phone : '010-1234-1234',
+        //     email : '123@gmail.com'
+        // }
+        
+        let name = '김윤재';
+        let age = 10;
+        let phone = '010-1234-1234';
+        let email = '123123@gmaill.com';
+
+        // const user = {
+        //     name : name,
+        //     age : age,
+        //     phone : phone,
+        //     email : email
+        // }
+
+        // 축약 가능 
+        const user = {name,age,phone,email}; // 프로퍼티 단축 구문
+        
+        function NameCard() {
+
+            return <h1>{user.name}</h1>
+        }
+
+        function AgeCard() {
+
+            return <h2 style={{color : 'orangered'}}>{user.age}</h2>
+        }
+
+        function PhoneCard() {
+
+            return <h3 style={{color : 'skyblue'}}>{user.phone}</h3>
+        }
+
+        function EmailCard() {
+
+            return <div style={{backgroundColor : 'yellow'}}>{user.email}</div>    
+        }
+
+        function UserInfo() {
+
+            return (
+                <div style={{width: 300, border: '1px solid black'}}>
+                    <NameCard/>
+                    <AgeCard/>
+                    <PhoneCard/>
+                    <EmailCard/>
+                </div>
+            );
+        }
+
+        root.render(UserInfo());
+        // root.render(
+        //     <>
+        //     <NameCard/>
+        //     <AgeCard/>
+        //     <PhoneCard/>
+        //     <EmailCard/>
+        //     </>
+        // );
+
+    </script>
+</body>
+</html>
