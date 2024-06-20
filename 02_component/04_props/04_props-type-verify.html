@@ -16,6 +16,7 @@
         const root = ReactDOM.createRoot(document.getElementById('root'));
 
         function PropsVerify({name, favoriteNumber, children}) {
+            console.log(name);
             return (
                 <>
                 <h1>내 이름은 {name} 이다</h1>
@@ -42,7 +43,8 @@
 
         root.render([
             <PropsVerify name='김치ㅂ맨' favoriteNumber={5}>텍스트노드</PropsVerify>,
-            <PropsVerify name='3'></PropsVerify>
+            <PropsVerify name='3' children='ffsdfdsfs'></PropsVerify>,
+            PropsVerify({name : 'sfasd', favoriteNumber : 123, children : 'fdsfas'})
     ]
         );
     </script>
