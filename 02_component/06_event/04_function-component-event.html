@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script crossorigin src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script crossorigin src="https://unpkg.com/prop-types@15.6/prop-types.min.js"></script>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+
+        const {useState} = React;
+
+        function LoginComponent() {
+            
+            const [loginform, setloginform] = useState({
+                passwordtype : 'password',
+            })
+
+            const [username, setusername] = useState('');
+            const [password, setpassword] = useState('');
+
+            const onChangeUsername = e => setusername(e.target.value);
+            const onChangePassword = e => setpassword(e.target.value);
+
+            const onClickHandler = () => {
+                alert(`username : ${username} \n password : ${password}`)
+                setusername('');
+                setpassword('');
+            }
+
+
+            return(
+                <>
+                    <h1>로그인 폼</h1>
+                    <label for="username">아이디 : </label>
+                    <input type="text" name="username" placeholder="아이디를 입력해주세요" onChange={onChangeUsername} value={username}/>
+                    <br/>
+                    <div>
+                    <label for="password">비밀번호 : </label>
+                    <input type={loginform.passwordtype} name="password" placeholder="비밀번호를 입력해주세요" value={password} onChange={onChangePassword}/>
+                    <button onClick={ () => {setloginform(
+                        {passwordtype : 'text'})
+                    }}>비밀번호확인</button></div>
+                    <br/>
+                    <button onClick={onClickHandler}>로그인</button>
+                </>
+            );
+
+        }
+
+    root.render(<LoginComponent/>)
+    </script>
+</body>
+</html>

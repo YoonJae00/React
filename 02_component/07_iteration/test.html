@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script crossorigin src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script crossorigin src="https://unpkg.com/prop-types@15.6/prop-types.min.js"></script>
+    <link rel="stylesheet" href="test.css">
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+
+        const {useState} = React;
+
+
+
+        function Todo() {
+
+            const [info, setinfo] = useState([
+                'test1','test2','test3'
+            ])
+
+            const [text, settext] = useState('');
+
+
+            const list = info.map((val,index) => {
+                return (
+                    <li key={index}>{val}</li>
+                )
+            })
+
+            const buttonClickHandler = () => {
+                const newList = info.concat(text);
+
+                settext('');
+                setinfo(newList);
+            }
+
+
+            return (
+                <>
+                <div className="todolist">
+                <ul>{list}</ul>
+                 </div>
+                <input type="text" value={text} onChange={ (e) => settext(e.target.value)}/>
+                <button onClick={buttonClickHandler}>추가하기</button>
+               </>
+            )
+
+        }
+
+        root.render(
+            <div className="App">
+                <div className="black-nav">
+                    <h4 style={ {color : 'white', fontSize : '30px'} }>오늘의 할일!  { new Date().toLocaleDateString()}</h4>
+                </div>
+                <Todo/>
+                <div className="footer">
+                    CopyRight2022</div>
+            </div>
+        )
+    </script>
+</body>
+</html>

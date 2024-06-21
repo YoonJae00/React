@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script crossorigin src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script crossorigin src="https://unpkg.com/prop-types@15.6/prop-types.min.js"></script>
+    <link rel="stylesheet" href="03_todo-list.css">
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+
+        const {useState} = React;
+
+
+        function Header() {
+            return(
+                <div className='header'>
+                    <h1>오늘의 할 일!!! {new Date().toLocaleDateString} </h1>    
+                </div>
+            )
+        }
+
+        function TodoList() {
+
+            const [todos, settodos] = useState([
+                {id : 1, description : '할일 목록을 추가해주세요', isDone : false, isModify : false}
+            ]);
+
+            const [inputText, setinputText] = useState('');
+            const [nextId, setnextId] = useState(2)
+
+            const onChangeHandler = (e) => {
+                setinputText(e.target.value);
+            }
+
+            const onClickHandler = () => {
+                const newtodo = todos.concat(
+                    {id: nextId, description: inputText, isDone : false, isModify : false}
+                )
+                setnextId(nextId + 1);
+                setinputText('');
+                settodos(newtodo);
+            }
+
+            return(
+                <>
+                    <h3>todo-List</h3>
+                    <div className='todo-list'>
+                        <TodoItems todos={todos} settodos={settodos}/>
+                    </div>
+                    <div className='append-list'>
+                        <input type="text" value={inputText} onChange={onChangeHandler}/>
+                        <button as="input" type="button" onClick={onClickHandler}>추가하기</button>
+                        
+                    </div>
+                </>
+            )
+        }
+
+        function TodoItems({todos, settodos}) {
+
+            console.log(todos)
+            const removeTodo = (id) => {
+                const removeList = todos.filter(todo => todo.id !== id);
+
+                settodos(removeList);
+            }
+
+            const onChangeHandler = (e) => {
+                const changeStatusList = todos.map(val => {
+                    if(val.id === parseInt(e.target.id)) {
+                        val.isDone = e.target.checked;
+                    }
+
+                    return val;
+                })
+                settodos(changeStatusList);
+            }
+            
+            const modifyTodo = (id) => {
+                
+                const updatedTodos = todos.map(todo => 
+                todo.id === id ? { ...todo, isModify: true } : todo
+                );
+                settodos(updatedTodos);
+            };
+
+            const [modifyText, setmodifyText] = useState('');
+            console.log(modifyText);
+
+            const modifyOnChange = (e) => {
+                setmodifyText(e.target.value);
+            }
+
+            const modifyButton = (id) => {
+                
+                const modifyTodo = todos.map(todo => {
+                    return(
+                    todo.id == id ? { ...todo,description:modifyText} : todo
+                )
+                })
+                console.log('modifyTodo' + modifyTodo);
+                setmodifyText('');
+                settodos(modifyTodo);
+            };
+
+            return (
+                <>
+                {
+                    todos.map( todo => {
+                        return (
+                        <p key={todo.id}>
+                            <input type="checkbox" id={todo.id} onChange={onChangeHandler}/>    
+                            <label for={todo.id} style={{textDecoration: todo.isDone ? 'line-through':'none'}}>
+                                {todo.description}
+                            </label>
+                            <input onChange={modifyOnChange} value={modifyText} type="text" style={{ display: todo.isModify ? 'inline' : 'none' }}/>
+                            <button onClick={ () => modifyButton(todo.id)} style={{ display: todo.isModify ? 'inline' : 'none' }}>확인</button>
+                            <button onClick={ () => removeTodo(todo.id)}>x</button>
+                            <button onClick={ () => modifyTodo(todo.id)}>수정하기</button>
+                        </p>
+                    )
+                    })
+                }
+                </>
+            )
+        }
+
+        function Content() {
+
+            return (
+                <div className="content">
+                    <TodoList/>
+                </div>
+            )
+        }
+
+        function Footer() {
+
+            return (
+                <div className="footer">
+                    <a href="https://gi.esmplus.com/yoonbusi77/CYWORLD/jjgleft.gif">
+                        <p>Copyright 2024. yoonjae</p></a>
+                </div>
+            )
+        }
+
+        function App() {
+            return (
+                <div className="container">
+                    <Header/>
+                    <Content/>
+                    <Footer/>
+                </div>
+            )
+        }
+
+        root.render(<App/>);
+    </script>
+    
+</body>
+</html>

@@ -54,6 +54,8 @@
                     backgroundColor : 'black',
                     transition : '2s'
             })
+
+            const copyColor = {...color};
             
             let timesecond = 0;
             const [timewatch, settimewatch] = useState(0)
@@ -66,10 +68,8 @@
                     <button onClick={onClickLeave}>퇴장</button>
                     </div>
                     <div style={color}>
-                        <button onClick={() => setcolor( prevColor => ({
-                        ...prevColor,
-                        backgroundColor: 'red'
-                        }))}>빨간색</button>
+                        <button onClick={() => setcolor( copyColor.backgroundColor = 'red', copyColor
+                        )}>빨간색</button>
                         <button onClick={() => setcolor( prevColor => ({
                         ...prevColor,
                         backgroundColor: 'blue'
