@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script crossorigin src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script crossorigin src="https://unpkg.com/prop-types@15.6/prop-types.min.js"></script>
+</head>
+<body>
+    <div id="root"></div>
+
+    <!-- 
+        06_event
+        05_multiple-function-component-event-handling
+    -->
+
+    <script type="text/babel">
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+
+        const {useReducer} = React;
+
+        function reducer(state, action){
+
+            console.log('state',state);
+            console.log('action',action);
+
+            return {
+                ...state,
+                [action.name] : action.value
+            }
+            
+        }
+
+        function RegistForm() {
+
+            const [state, dispatch] = useReducer(reducer, {name : '', nickname : ''});
+
+            const {name,nickname} = state;
+
+            
+
+            return (
+                <>
+                    <label>이름 :</label>
+                    <input type="text" name="name" onChange={ (e) => {
+                        dispatch(e.target)
+                    }}/>
+                    <br/>
+                    <label>닉네임 :</label>
+                    <input type="text" name="nickname" onChange={ e => {
+                        dispatch(e.target)
+                    }}/>
+                    <br/>
+                    <div>
+                        <h3>입력한 이름: {name}</h3>
+                        <h3>입력한 닉네임: {nickname}</h3>
+                    </div>
+                </>
+            )
+        }
+
+        root.render(<RegistForm/>)
+    </script>
+    
+</body>
+</html>

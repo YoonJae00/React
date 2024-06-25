@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script crossorigin src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script crossorigin src="https://unpkg.com/prop-types@15.6/prop-types.min.js"></script>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+
+        const {useState, useEffect} = React;
+
+       const hardCalculator = (num) => {
+           console.log(num);
+            console.log('요상한계산기')
+           for(let i = 0; i < 9991000; i++){
+
+           }
+           return num + 10000;
+       }
+
+       const easyCalculator = (num) => {
+            console.log('정상적인 계산기');
+
+            return num + 1;
+       }
+      
+
+        function App() {
+            useEffect(() => {
+       }, [hardNumber])
+       useEffect(() => {
+        }, [easyNumber])
+
+        const [hardNumber, sethardNumber] = useState(0);
+        const [easyNumber, seteasyNumber] = useState(0);
+
+        // 우리가 예상한 바로는 요상한 계산기는 시간이 오래걸리는 것을 예측할 수 있다.
+        // 하지만 쉬운 계산기도 오래걸림
+        // 쉬운 계산기 동작 시에도 state 가 바뀌면 App 컴포넌트가 리 랜더링 되기 떄문
+        // hardSum 지역변수도 같이 초기화가 되기 떄문에 둘다 동작함.
+        const hardSum = hardCalculator(hardNumber);
+        const easySum = easyCalculator(easyNumber);
+        return (
+            <>
+                <h3>계산이 오래걸리는 요상한 계산기</h3>
+                <input type="number" value={hardNumber} onChange={ e => sethardNumber(parseInt(e.target.value))}/>
+                <span>+10000 = {hardSum}</span>
+                <h3>계산이 금방되는 정상적인 계산기</h3>
+                <input type="number" value={easyNumber} onChange={ e => seteasyNumber(parseInt(e.target.value))}/>
+                <span>+1 = {easySum}</span>
+            </>
+        )
+    }
+    root.render(<App/>)
+    </script>
+    
+</body>
+</html>
