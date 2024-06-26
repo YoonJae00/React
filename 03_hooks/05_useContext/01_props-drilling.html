@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script crossorigin src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script crossorigin src="https://unpkg.com/prop-types@15.6/prop-types.min.js"></script>
+    <link rel="stylesheet" href="01_props-drilling.css">
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+
+        const {useState} = React;
+
+
+        function App() {
+
+            const [color, setcolor] = useState('lightgray');
+
+            const [fontColor, setfontColor] = useState("black");
+
+            return(
+                <Page color={color} setcolor={setcolor} fontColor={fontColor} setfontColor={setfontColor}/>
+            )
+        }
+
+        function Page({color, setcolor, fontColor, setfontColor}) {
+
+            return(
+                <div className="page">
+                    <Header color={color} fontColor={fontColor} setfontColor={setfontColor}/>
+                    <Content color={color}/>
+                    <Footer color={color} setcolor={setcolor}/>
+                </div>
+            )
+
+        }
+
+        function Header({color, fontColor, setfontColor}) {
+
+            const style = {
+                backgroundColor : color,
+                color : fontColor
+            }
+            return(
+                <header className="header" style={style}>
+                    <h1>Header 영역 입니다.</h1>
+                    <label>font Color : </label>
+                    <input type="text" value={fontColor} onChange={e => setfontColor(e.target.value)}/>
+                </header>
+            )
+
+        }
+
+        function Content({color, fontColor}) {
+
+            const style = {
+                backgroundColor : color,
+                color : `${fontColor}`
+            }
+
+            return(
+
+                <div className="content" style={style}>
+                    <p style={{color : fontColor}}>Content 영역입니다. 내용을 작성하세요</p>    
+                </div>
+
+            )
+
+        }
+
+        function Footer({color,setcolor, fontColor}) {
+
+            const [footercolor, setfootercolor] = useState("pink");
+
+            const style = {
+                backgroundColor : footercolor,
+                color : fontColor
+            }
+
+            return (
+                <footer className="footer" style={style}>
+                    <label>background Color : </label>
+                    <input type="text" value={color} onChange={e => setcolor(e.target.value)}/>
+                    <br/>
+                    <label>footer Color : </label>
+                    <input type="text" value={footercolor} onChange={ e => setfootercolor(e.target.value)}/>
+                    CopyRight2024, footer 영역
+                </footer>
+            )
+
+        }
+
+        root.render(<App/>)
+
+    </script>
+    
+</body>
+</html>

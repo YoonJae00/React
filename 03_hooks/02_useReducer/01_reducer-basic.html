@@ -59,7 +59,7 @@
 
             /* 1번째 인자 -> 현재 우리가 설정한 state, 2번째 인자 -> 어떤 행위 action  */
             function reducer(state, action) {
-                console.log('dispatch?')
+                console.log('dispatch?');
                 console.log(state);
                 console.log(action);
                 // switch 문 자주 사용 (if-else 도 쓴다.)
@@ -78,7 +78,6 @@
                                                 // reducer 함수와, state 에 들어갈 초기값 설정
                 const [state, dispatch] = useReducer(reducer, {value : 0});
                 return (
-
                     <>
                     <h1>Counter : {state.value}</h1>
                     <button onClick={ () => {
@@ -95,7 +94,6 @@
 
                 const [state, dispatch] = useReducer(reducer, {value : 0});
                 return (
-
                     <>
                     <h1>Counter : {state.value}</h1>
                     <button onClick={ () => {
@@ -107,8 +105,6 @@
                     </>
                 )
             }
-
-
             root.render(
             <>    
             <Counter/>
