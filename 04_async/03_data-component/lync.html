@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script crossorigin src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script crossorigin src="https://unpkg.com/prop-types@15.6/prop-types.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        //https://api.openweathermap.org/data/2.5/weather?lat=37.55547485029936&lon=126.93712086193925&appid=dd1c205b330920310cc460c6c4f027c7
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+
+
+        function App() {
+
+            const {useState, useEffect} = React;
+
+            const [singer, setsinger] = useState('');
+            const [title, settitle] = useState('');
+            const [lyrics, setlyrics] = useState('');
+
+            const onClickHandler = () => {
+                axios.get(`https://api.lyrics.ovh/v1/${singer}/${title}`)
+                .then(res => {
+                setlyrics(res.data)
+                console.log(lyrics)
+            })
+            }
+            return(
+                <>
+                    <label>가수 : </label>
+                    <input type="text" placeholder='가수를 입력하세요' onChange={e => setsinger(e.target.value)}/>
+                    <label>노래제목 : </label>
+                    <input type="text" placeholder='노래제목을 입력하세요' onChange={e => settitle(e.target.value)}/>
+                    <button onClick={onClickHandler}>검색하기</button>
+                    { (lyrics) ? <div>{lyrics.lyrics}</div> : <h1>검색해주세요</h1>}
+                </>
+            )
+
+        }
+
+        root.render(<App/>)
+    </script>
+    
+</body>
+</html>
