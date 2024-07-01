@@ -122,7 +122,7 @@
                             <label for={todo.id} style={{textDecoration: todo.isDone ? 'line-through':'none'}}>
                                 {todo.description}
                             </label>
-                            <input onChange={modifyOnChange} value={modify} type="text" style={{ display: todo.isModify ? 'inline' : 'none' }}/>
+                            <input onChange={modifyOnChange} value={modifyText} type="text" style={{ display: todo.isModify ? 'inline' : 'none' }}/>
                             <button onClick={ () => modifyButton(todo.id)} style={{ display: todo.isModify ? 'inline' : 'none' }}>확인</button>
                             <button onClick={ () => removeTodo(todo.id)}>x</button>
                             <button onClick={ () => modifyTodo(todo.id)}>수정하기</button>

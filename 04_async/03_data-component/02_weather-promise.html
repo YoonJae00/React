@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script crossorigin src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script crossorigin src="https://unpkg.com/prop-types@15.6/prop-types.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        //https://api.openweathermap.org/data/2.5/weather?lat=37.55547485029936&lon=126.93712086193925&appid=dd1c205b330920310cc460c6c4f027c7
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+
+        function App() {
+
+            const {useState, useEffect} = React;
+            const [weather, setweather] = useState()
+            const [position, setposition] = useState();
+
+            console.log('dsada',weather)
+            console.log(position)
+
+
+            // useEffect(() => {
+            //     new Promise((resolve, reject) => {
+            //         navigator.geolocation.getCurrentPosition((currentPosition) => {
+            //             console.log(currentPosition)
+            //             setposition({
+            //                 longtitude : currentPosition.coords.longitude,
+            //                 latitude : currentPosition.coords.latitude
+            //             })
+            //         })
+            //         return resolve(position.coords);
+            //     })
+            //     .then(coords => {
+            //         axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${coords.latitude}&lon=${coords.longtitude}&appid=dd1c205b330920310cc460c6c4f027c7`)
+            //         .then(res => setweather(res.data))
+            //     })
+            // }, []);
+
+            useEffect(() => {
+        new Promise((resolve, reject) => {
+            navigator.geolocation.getCurrentPosition(
+                (currentPosition) => {
+                    const coords = {
+                        longitude: currentPosition.coords.longitude,
+                        latitude: currentPosition.coords.latitude
+                    };
+                    setposition(coords);
+                    resolve(coords);
+                }
+            );
+        })
+        .then((coords) => {
+            return axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${coords.latitude}&lon=${coords.longitude}&appid=dd1c205b330920310cc460c6c4f027c7`);
+        })
+        .then((res) => {
+            setweather(res.data);
+        })
+    }, []);
+
+
+            console.log(weather);
+            return(
+                weather ? (
+                <>
+                    <Header/>
+                    <h3>현재위치 : {weather.name}</h3>
+                    <h4>경도 {weather.coord.lon}: 위도 : {weather.coord.lat}</h4>
+                    <h4>조회할 도시 : </h4>
+                    <h4>날씨 : {weather.weather[0].main} 날씨 설명 : {weather.weather[0].description}</h4>
+                    <h4>풍향 :{weather.wind.deg} 풍속 : {weather.wind.speed} </h4>
+                </>
+        ) : <img src='https://cdn.dribbble.com/users/2973561/screenshots/5757826/loading__.gif' style={{width : '100%', height : '100%'}}/>
+            )
+        }
+
+        function Header() {
+
+            return (
+                <h1>오늘의 날씨</h1>
+            )
+        }
+
+        root.render(<App/>)
+    </script>
+</body>
+</html>
