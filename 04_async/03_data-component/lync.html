@@ -15,11 +15,11 @@
     <script type="text/babel">
         //https://api.openweathermap.org/data/2.5/weather?lat=37.55547485029936&lon=126.93712086193925&appid=dd1c205b330920310cc460c6c4f027c7
         const root = ReactDOM.createRoot(document.getElementById('root'));
-
+        const {useState, useEffect} = React;
 
         function App() {
 
-            const {useState, useEffect} = React;
+          
 
             const [singer, setsinger] = useState('');
             const [title, settitle] = useState('');
@@ -27,22 +27,92 @@
 
             const onClickHandler = () => {
                 axios.get(`https://api.lyrics.ovh/v1/${singer}/${title}`)
+                    .then(res => {
+                        setlyrics(res.data.lyrics);
+                        console.log(res.data.lyrics);
+                    })
+                    .catch(err => {
+                        console.log('123',err);
+                        setlyrics('가사를 찾을 수 없습니다.');
+                    });
+            };
+
+            const [strangeImg, setstrangeImg] = useState("")
+
+            const imgHanlder = () => {
+                axios.get('https://api.jikan.moe/v4/random/anime')
                 .then(res => {
-                setlyrics(res.data)
-                console.log(lyrics)
-            })
+                    setstrangeImg(res.data);
+                })
+                .catch(err => {
+                    console.err(err)
+                    setstrangeImg('오류 발생!')
+                })
             }
             return(
                 <>
+                    <User/>
+                    <hr/>
                     <label>가수 : </label>
                     <input type="text" placeholder='가수를 입력하세요' onChange={e => setsinger(e.target.value)}/>
                     <label>노래제목 : </label>
                     <input type="text" placeholder='노래제목을 입력하세요' onChange={e => settitle(e.target.value)}/>
                     <button onClick={onClickHandler}>검색하기</button>
                     { (lyrics) ? <div>{lyrics.lyrics}</div> : <h1>검색해주세요</h1>}
+                    <br/>
+                    <hr/>
+                    <h1>사진생성기</h1>
+                    <button onClick={imgHanlder}>이상한거 생성기</button>
+                    <br/>
+                    <br/>
+                    {
+                        strangeImg ? <img src={strangeImg.data.images.jpg.image_url}/> : <h2>이상한거 생길예정</h2>
+                    }
+                    <hr/>
+                    <hr/>
                 </>
             )
 
+        }
+
+        function User() {
+
+            const [user, setuser] = useState('')
+
+            useEffect(() => {
+              axios.get('https://randomuser.me/api/')
+                .then(res => {
+                    setuser(res.data.results[0]);
+                })
+                .catch(err => {
+                    console.log('err',err)
+                })
+            }, [])
+            console.log('user',user);
+
+            if(!user){
+                return <img src='https://cdn.dribbble.com/users/2973561/screenshots/5757826/loading__.gif'/>
+            }
+
+            return (
+                <>
+                <div style={{ border: '1px solid #ccc', padding: '10px', borderRadius: '5px', width: '300px', margin: '0 auto', textAlign: 'center' }}>
+                    <img src={user.picture.large} alt={`${user.name.first} ${user.name.last}`} style={{ borderRadius: '50%' }} />
+                    <h2>{`${user.name.title} ${user.name.first} ${user.name.last}`}</h2>
+                    <p><strong>ID:</strong> {user.login.username}</p>
+                    <p><strong>PASSWORD:</strong> {user.login.password}</p>
+                    <p><strong>Gender:</strong> {user.gender}</p>
+                    <p><strong>Email:</strong> {user.email}</p>
+                    <p><strong>Phone:</strong> {user.phone}</p>
+                    <p><strong>Cell:</strong> {user.cell}</p>
+                    <p><strong>Address:</strong> {`${user.location.street.number} ${user.location.street.name}, ${user.location.city}, ${user.location.state}, ${user.location.country}, ${user.location.postcode}`}</p>
+                    <p><strong>Date of Birth:</strong> {new Date(user.dob.date).toLocaleDateString()}</p>
+                    <p><strong>Age:</strong> {user.dob.age}</p>
+                    <p><strong>Registered:</strong> {new Date(user.registered.date).toLocaleDateString()}</p>
+                    <p><strong>Nationality:</strong> {user.nat}</p>
+                </div>
+                </>
+            )
         }
 
         root.render(<App/>)
