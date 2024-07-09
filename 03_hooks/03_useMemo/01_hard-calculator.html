@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script crossorigin src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script crossorigin src="https://unpkg.com/prop-types@15.6/prop-types.min.js"></script>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+
+        const {useState} = React;
+       
+        
+        
+        const hardCalculator = (num) => {
+            console.log(num);
+
+            for(let i = 0; i < 99999000; i++){
+
+            }
+
+            return num + 10000;
+        }
+
+        function App() {
+
+            const [hardNumber, sethardNumber] = useState(0);
+
+            /* 
+                input 태그의 변화(state 변화)가 생길 때마다 해당하는 지역변수부터
+                return 구문까지 리렌더링 된다.
+            */
+            const hardSum = hardCalculator(hardNumber); // 지역변수는 state 가 변화 될 때마다 다시 초기화가 된다.
+
+            return (
+                <>
+                    <h3>계산이 오래걸리는 요상한 계산기</h3>
+                    <input type="number" value={hardNumber} onChange={ e => sethardNumber(parseInt(e.target.value))}/>
+                    <span>+10000 = {hardSum}</span>
+                </>
+            )
+        }
+
+        root.render(<App/>)
+    </script>
+</body>
+</html>

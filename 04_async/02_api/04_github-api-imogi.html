@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script crossorigin src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script crossorigin src="https://unpkg.com/prop-types@15.6/prop-types.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+
+        const {useState} = React;
+
+        function App() {
+            
+            const [imgURL, setimgURL] = useState([]);
+
+
+            const [name, setname] = useState("");
+
+            
+            
+            console.log(imgURL)
+            
+            return(
+                <>
+                    <SearchBox setimgURL={setimgURL} name={name} setname={setname}/>
+                    <br/>
+                    <ImgBOX imgURL={imgURL}/>
+                </>
+            )
+        }
+
+        function ImgBOX({imgURL}) {
+
+            return (
+            !!imgURL ? <img src={imgURL}/> : <div>없습니다.</div>
+        )
+
+        }
+
+        function SearchBox({setimgURL,name,setname}) {
+
+
+            const onClickHandler = () => {
+                //  버튼 누르면 github api 이모지 데이터 받기
+                axios.get('https://api.github.com/emojis')
+                .then(res => {
+                    console.log(res.data)
+                    setimgURL(res.data[name])
+                })
+            }
+
+            return(
+                <>
+                    <input type="text" onChange={ e => setname(e.target.value)}/>
+                    <button onClick={onClickHandler}>검색</button>
+                </>
+            )
+        }
+            
+        root.render(<App/>)
+    </script>
+    
+</body>
+</html>

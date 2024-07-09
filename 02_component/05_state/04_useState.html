@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script crossorigin src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script crossorigin src="https://unpkg.com/prop-types@15.6/prop-types.min.js"></script>
+</head>
+<body>
+    <div id="root"></div>
+    
+    <!-- 
+        함수형 컴포넌트는 기본적으로 state 이 없음.
+        리액트 16.8 버전 이후 useState 라는 함수 이용해서
+        함수형 컴포넌트에서도 state 관리 가능
+
+        그래서 우리는 useState 지속적 사용 가능
+        why? 리액트 개발 팀이 함수 컴포넌트와 hooks 사용을
+        앞으로 주요 개발 방식이 될 것이라고 공지했기 떄문
+    -->
+    <script type="text/babel">
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+
+        /* 
+            useState 는 React 객체에서 내부에 존재하는 함수형 속성이다.
+            따라서 React.useState() 형태로 호출을 해서 사용해야 한다.
+            하지만 우리는 구조분해 할당을 통해서 미리 전역변수로 선언해두고 나면
+            React. 을 생략하고 useState 로 사용할 수 있다.
+        */
+
+        // const useState = React.useState();
+        const {useState} = React;
+        
+        
+        function Say() {
+
+            // useState 함수는 반환형이 2칸짜리 배열이다.
+            // 2번째 인덱스 -> 함수(setter)
+            // console.log(useState());
+
+            // message 라는 상태 (state) 와 setter 메소드를 배열 구조 분해 할당으로 각각의 변수에 할당함. 
+            const [message, setmessage] = useState({default:'입장안했다', status:'dsada'});
+
+            const onClickEnter = () => setmessage({default:'ㅎ2ㅎ2'});
+
+            const onClickLeave = () => setmessage({default:'ㅂ2ㅂ2'});
+
+            const [color, setcolor] = useState({
+                    width: 200,
+                    height: 200,
+                    backgroundColor : 'black',
+                    transition : '2s'
+            })
+
+            const copyColor = {...color};
+            
+            let timesecond = 0;
+            const [timewatch, settimewatch] = useState(0)
+
+            return(
+                <>
+                    <h1>{message.default}</h1>
+                    <div>
+                    <button onClick={onClickEnter}>입장</button>    
+                    <button onClick={onClickLeave}>퇴장</button>
+                    </div>
+                    <div style={color}>
+                        <button onClick={() => setcolor( copyColor.backgroundColor = 'red', copyColor
+                        )}>빨간색</button>
+                        <button onClick={() => setcolor( prevColor => ({
+                        ...prevColor,
+                        backgroundColor: 'blue'
+                        }))}>파랑색</button>
+                        <button onClick={() => setcolor( prevColor => ({
+                        ...prevColor,
+                        backgroundColor: 'green'
+                        }))}>초록색</button>
+                    </div>
+
+                    <div>
+                        <h1>스톱워치</h1>
+                        <h3 onClick={ () => settimewatch(() => {
+                            setInterval(() => {
+                console.log('asdsa')
+                timesecond = timesecond + 1;
+            },10)
+                        })}>{timesecond}</h3>
+                    </div>
+                   
+                </>
+            );
+        }
+
+        root.render(<Say/>);
+    </script>
+</body>
+</html>
