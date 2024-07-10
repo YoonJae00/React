@@ -17,28 +17,32 @@ let user = createSlice({
         return [...state, action.payload];
       },
       updateUser : (state, action) => {
-        
+        return state.map(user => 
+          user.username === action.payload.username ? { ...user, ...action.payload } : user
+      );
       }
     }
 })
 
 let myInfo = createSlice({
-  name : 'myInfo',
-  initialState : {
-    username : '',
-    email : '',
-    password : ''
+  name: 'myInfo',
+  initialState: {
+      username: '',
+      email: '',
+      password: ''
   },
-  reducers : {
-    setMyInfo : (state, action) => {
-      return { ...state, ...action.payload }
-    }
+  reducers: {
+      setMyInfo: (state, action) => {
+          return { ...action.payload };
+      }
   }
-})
+});
 
 export const { addUser, updateUser } = user.actions;
+export const {setMyInfo} = myInfo.actions;
 export default configureStore({
   reducer: { 
-    user : user.reducer
+    user : user.reducer,
+    myInfo : myInfo.reducer
   }
 })

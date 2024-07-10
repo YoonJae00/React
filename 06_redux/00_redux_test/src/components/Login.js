@@ -1,19 +1,25 @@
 import React, { useState } from 'react';
 import { Form, Button, Container, Row, Col, Alert, Nav } from 'react-bootstrap';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {Link} from 'react-router-dom'
+import { setMyInfo } from '../hooks/store';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
+  const dispatch = useDispatch();
+
   let user = useSelector((state) => state.user)
+  let myInfo = useSelector((state) => state.myInfo)
+  console.log('myInfo',myInfo)
 
   const handleLogin = (e) => {
     e.preventDefault();
     const result = user.find((user) => email === user.email && password === user.password);
     console.log('result', result)
+    dispatch(setMyInfo(result))
     if(result){
       setError('로그인 성공!')
     } else {
@@ -52,6 +58,9 @@ const Login = () => {
             </Button>
             <Nav.Link as={Link} to="/regist">
             <p>아이디가 없으신가요??</p>
+          </Nav.Link>
+          <Nav.Link as={Link} to="/update">
+            <p>정보수정하기</p>
           </Nav.Link>
           </Form>
         </Col>

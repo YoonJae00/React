@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from 'axios';
+import {Row} from 'react-bootstrap'
 
 function Content() {
     const [airport, setairport] = useState(null);
@@ -16,11 +17,14 @@ function Content() {
 
     return (
         <>
+            
             <input type="text" onChange={e => setinputvalue(e.target.value)}/>
             <button onClick={onClickHandler}>검색</button>
+            <Row className="justify-content-md-center mt-2">
             {airport ? 
                 airport.response.body.items.map(item => <div key={item.facility_nm}>{item.lckoreannm}</div>)
                 : <h1>검색하세요</h1>}
+            </Row>
         </>
     );
 }

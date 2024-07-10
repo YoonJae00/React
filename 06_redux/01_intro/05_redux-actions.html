@@ -68,11 +68,11 @@
         /* 3. handleActions
             - switch 문을 사용하지 않고 action 에 따라 state 를 처리하는 리듀서를 생성한다.
         */
-      
-
         const reducer = handleActions(
             {
-                [INCREMENT]: (state, { payload: { incrementValue } }) => state + incrementValue,
+                [INCREMENT]: (state, { 
+                    payload: { incrementValue } }
+                ) => state + incrementValue,
                 [DECREMENT]: (state, { payload: { decrementValue } }) => state - decrementValue
             },
             initState
@@ -87,15 +87,15 @@
 
             const startUnlimitedIncrease = () => {
                 setInterval(() => {
-                    dispatch(increase);
+                    dispatch(increase());
                 }, 100);
             };
 
             return (
                 <>
                 <h1>count: {count}</h1>
-                    <button onClick={() => dispatch(increase)}>+1</button>
-                    <button onClick={() => dispatch(decrease)}>-1</button>
+                    <button onClick={() => dispatch(increase())}>+1</button>
+                    <button onClick={() => dispatch(decrease())}>-1</button>
                     <button onClick={startUnlimitedIncrease}>무제한</button>
                 </>
             );
